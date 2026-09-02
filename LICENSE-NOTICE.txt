@@ -1,0 +1,5 @@
+tinyDub is source code for a native Windows desktop client.
+
+The build fetches nlohmann/json v3.12.0 from its official GitHub release at configure time. Review that dependency's MIT license before redistribution.
+
+Gemini Live API usage is subject to Google's current API terms, quotas, and model availability.
