@@ -35,6 +35,7 @@ jobs:
           '@
           $text = $text -replace 'namespace tiny \{', "namespace tiny {`r`n`r`n$helper"
           $text = $text -replace 'DrawTextW\(dc, ([^;\r\n]+), -1, &\(RECT\{([^}]+)\}\), ([^)]+)\);', 'DrawTextTemp(dc, $1, -1, RECT{$2}, $3);'
+          $text = $text -replace 'DrawTextW\(dc, L"The original application audio is not ducked in Overlay mode\."\s*,\s*-1,\s*&\(RECT\{40, 410, r\.right - 40, 430\}\),\s*([^)]+)\);', 'DrawTextTemp(dc, L"The original application audio is not ducked in Overlay mode.", -1, RECT{40, 410, r.right - 40, 430}, $1);'
           Set-Content -LiteralPath $source -Value $text -Encoding utf8
           $remaining = Select-String -Path $source -Pattern '&\(RECT\{' -SimpleMatch
           if ($remaining) { throw "Temporary RECT expressions remain in source." }
