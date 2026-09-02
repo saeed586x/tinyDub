@@ -29,12 +29,12 @@ jobs:
           $source = "src\main.cpp"
           $text = Get-Content -Raw -LiteralPath $source
           $helper = @'
-          static void DrawTextTemp(HWND, HDC dc, LPCWSTR text, int count, RECT rect, UINT format) {
+          static void DrawTextTemp(HDC dc, LPCWSTR text, int count, RECT rect, UINT format) {
               DrawTextW(dc, text, count, &rect, format);
           }
           '@
           $text = $text -replace 'namespace tiny \{', "namespace tiny {`r`n`r`n$helper"
-          $text = $text -replace 'DrawTextW\(dc, ([^;\r\n]+), -1, &\(RECT\{([^}]+)\}\), ([^)]+)\);', 'DrawTextTemp(hwnd_, dc, $1, -1, RECT{$2}, $3);'
+          $text = $text -replace 'DrawTextW\(dc, ([^;\r\n]+), -1, &\(RECT\{([^}]+)\}\), ([^)]+)\);', 'DrawTextTemp(dc, $1, -1, RECT{$2}, $3);'
           Set-Content -LiteralPath $source -Value $text -Encoding utf8
           $remaining = Select-String -Path $source -Pattern '&\(RECT\{' -SimpleMatch
           if ($remaining) { throw "Temporary RECT expressions remain in source." }
