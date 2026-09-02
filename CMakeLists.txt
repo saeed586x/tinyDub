@@ -7,7 +7,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(tinyDub WIN32 src/main.cpp)
 
-target_compile_definitions(tinyDub PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
+target_compile_definitions(tinyDub PRIVATE
+    UNICODE
+    _UNICODE
+    WIN32_LEAN_AND_MEAN
+    NOMINMAX
+    WINHTTP_WEB_SOCKET_SUCCESS_CLOSE=WINHTTP_WEB_SOCKET_SUCCESS_CLOSE_STATUS
+)
 
 target_link_libraries(tinyDub PRIVATE
     ole32
@@ -28,7 +34,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 target_link_libraries(tinyDub PRIVATE nlohmann_json::nlohmann_json)
 
 if(MSVC)
-    target_compile_options(tinyDub PRIVATE /W4 /permissive- /EHsc)
+    target_compile_options(tinyDub PRIVATE /W4 /permissive- /EHsc /wd4005 /wd4189 /wd4996)
 endif()
 
 if(WIN32)
