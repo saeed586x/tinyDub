@@ -2,29 +2,27 @@ $ErrorActionPreference = 'Stop'
 
 $root = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $exe = Join-Path $root 'build\Release\tinyDub.exe'
-$source = Join-Path $root 'src\ui_main.cpp'
+$source = Join-Path $root 'src\tinydub_app.cpp'
 
 if (-not (Test-Path $exe)) { throw "Executable not found: $exe" }
 if (-not (Test-Path $source)) { throw "UI source not found: $source" }
 
-# The GitHub-hosted Windows runner is non-interactive/headless, so a visible
-# HWND cannot be used as a reliable CI assertion. We validate the UI contract
-# statically and also verify that the GUI executable can start and remain alive.
+$uiText = Get-Content -Raw -LiteralPath $source
 $requiredUiContract = @(
     'Gemini API key',
     'Show',
     'Target language',
     'Save key',
     'Forget key',
-    'Routing mode',
+    'Current routing',
     'Overlay mode',
-    'Original audio stays at system volume',
+    'SOURCE AUDIO',
+    'GEMINI',
+    'OUTPUT AUDIO',
     'Start translation',
     'Stop translation',
-    'Close'
+    'Waiting for translated audio'
 )
-
-$uiText = Get-Content -Raw -LiteralPath $source
 foreach ($item in $requiredUiContract) {
     if (-not $uiText.Contains($item)) {
         throw "UI contract text missing from source: $item"
@@ -37,8 +35,8 @@ try {
     if ($p.HasExited) {
         throw "tinyDub exited during GUI startup with exit code $($p.ExitCode)."
     }
-    Write-Host "UI startup smoke test passed (GUI process alive)."
-    Write-Host "UI contract smoke test passed ($($requiredUiContract.Count) required labels/states found)."
+    Write-Host "UI startup smoke test passed."
+    Write-Host "UI contract smoke test passed ($($requiredUiContract.Count) required strings found)."
 }
 finally {
     if ($p -and -not $p.HasExited) {
