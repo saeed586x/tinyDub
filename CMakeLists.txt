@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(tinyDub VERSION 0.2.0 LANGUAGES CXX)
+project(tinyDub VERSION 0.2.1 LANGUAGES CXX)
 
 if(MSVC)
     cmake_policy(SET CMP0091 NEW)
@@ -39,7 +39,15 @@ FetchContent_MakeAvailable(nlohmann_json)
 target_link_libraries(tinyDub PRIVATE nlohmann_json::nlohmann_json)
 
 if(MSVC)
-    target_compile_options(tinyDub PRIVATE /W4 /WX /permissive- /EHsc)
+    target_compile_options(tinyDub PRIVATE
+        /W4
+        /WX
+        /utf-8
+        /wd4312
+        /permissive-
+        /EHsc
+        /FI"${CMAKE_CURRENT_SOURCE_DIR}/src/win_compat.h"
+    )
 endif()
 
 if(WIN32)
