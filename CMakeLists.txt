@@ -14,7 +14,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(tinyDub WIN32 src/main.cpp)
 
-target_compile_definitions(tinyDub PRIVATE UNICODE _UNICODE)
+# WinHTTP's SDK names the successful WebSocket close status
+# WINHTTP_WEB_SOCKET_SUCCESS_CLOSE_STATUS. The source keeps the shorter
+# internal identifier for readability, so alias it at compile time.
+target_compile_definitions(tinyDub PRIVATE
+    UNICODE
+    _UNICODE
+    _CRT_SECURE_NO_WARNINGS
+    WINHTTP_WEB_SOCKET_SUCCESS_CLOSE=WINHTTP_WEB_SOCKET_SUCCESS_CLOSE_STATUS
+)
 
 target_link_libraries(tinyDub PRIVATE
     ole32
