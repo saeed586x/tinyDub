@@ -2,10 +2,10 @@ $ErrorActionPreference = 'Stop'
 
 $root = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $exe = Join-Path $root 'build\Release\tinyDub.exe'
-$source = Join-Path $root 'src\tinydub_app.cpp'
+$source = Join-Path $root 'src\main.cpp'
 
 if (-not (Test-Path $exe)) { throw "Executable not found: $exe" }
-if (-not (Test-Path $source)) { throw "UI source not found: $source" }
+if (-not (Test-Path $source)) { throw "Application source not found: $source" }
 
 $uiText = Get-Content -Raw -LiteralPath $source
 $requiredUiContract = @(
@@ -14,8 +14,8 @@ $requiredUiContract = @(
     'Target language',
     'Save key',
     'Forget key',
-    'Current routing',
-    'Overlay mode',
+    'Current mode',
+    'OVERLAY MODE',
     'SOURCE AUDIO',
     'GEMINI',
     'OUTPUT AUDIO',
