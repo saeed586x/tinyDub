@@ -36,6 +36,12 @@ jobs:
           if (!(Test-Path $exe)) { throw "Missing executable: $exe" }
           Get-Item $exe | Select-Object FullName,Length
 
+      - name: Win32 UI smoke test
+        shell: pwsh
+        run: |
+          powershell -ExecutionPolicy Bypass -File .\tests\ui-smoke.ps1
+          if ($LASTEXITCODE -ne 0) { throw "Win32 UI smoke test failed." }
+
       - name: Package
         shell: pwsh
         run: |
