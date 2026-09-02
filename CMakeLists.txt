@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(tinyDub VERSION 0.2.1 LANGUAGES CXX)
+project(tinyDub VERSION 0.3.0 LANGUAGES CXX)
 
 if(MSVC)
     cmake_policy(SET CMP0091 NEW)
@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(tinyDub WIN32 src/ui_main.cpp)
+add_executable(tinyDub WIN32 src/tinydub_app.cpp)
 
 target_compile_definitions(tinyDub PRIVATE
     UNICODE
@@ -43,7 +43,6 @@ if(MSVC)
         /W4
         /WX
         /utf-8
-        /wd4312
         /permissive-
         /EHsc
         /FI"${CMAKE_CURRENT_SOURCE_DIR}/src/win_compat.h"
